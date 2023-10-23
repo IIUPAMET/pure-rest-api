@@ -36,13 +36,9 @@ public class UserController {
 
   @GetMapping
   public CollectionModel<EntityModel<User>> getAll() {
-    var users = userService.getAll().stream()
-        .map(userAssembler::toModel)
-        .toList();
-    return CollectionModel.of(
-        users,
-        linkTo(methodOn(UserController.class).getAll()).withSelfRel()
-    );
+    var users = userService.getAll();
+    return userAssembler.toCollectionModel(users)
+        .add(linkTo(methodOn(UserController.class).getAll()).withSelfRel());
   }
 
   @GetMapping("/{id}")
@@ -77,13 +73,8 @@ public class UserController {
 
   @GetMapping("/{id}/notes")
   public CollectionModel<EntityModel<Note>> getUserNotes(@PathVariable(name = "id") String userId) {
-    var notes = userService.getAllNotes(userId).stream()
-        .map(noteAssembler::toModel)
-        .toList();
-
-    return CollectionModel.of(
-        notes,
-        linkTo(methodOn(UserController.class).getUserNotes(userId)).withSelfRel()
-    );
+    var notes = userService.getAllNotes(userId);
+    return noteAssembler.toCollectionModel(notes)
+        .add(linkTo(methodOn(UserController.class).getUserNotes(userId)).withSelfRel());
   }
 }

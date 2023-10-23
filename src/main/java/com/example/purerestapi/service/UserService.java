@@ -33,11 +33,9 @@ public class UserService {
 
   public User addNote(String userUuid, Note note) {
     var user = this.getUser(userUuid);
-    if (user.getNotes() == null) {
-      user.setNotes(new ArrayList<>());
-    }
+
     note.setUserUuid(userUuid);
-    user.getNotes().add(note);
+    user.addNote(note);
     return user;
   }
 
